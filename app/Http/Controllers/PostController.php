@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -27,14 +28,8 @@ class PostController extends Controller
        return view('post.create', compact('categories', 'tags'));
     }
 
-    public function store() {
-        $data = request()->validate([
-            'title'=>'required|string',
-            'content'=>'string',
-            'image'=>'string',
-            'category_id' => '',
-            'tags' => '',
-        ]);
+    public function store(PostRequest $request) {
+        $data = $request->validated();
         $tags = $data['tags'];
         unset($data['tags']);
         $post = Post::create($data);
@@ -55,14 +50,8 @@ class PostController extends Controller
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
-    public function update(Post $post) {
-        $data = request()->validate([
-            'title'=>'string',
-            'content'=>'string',
-            'image'=>'string',
-            'category_id' => '',
-            'tags' => '',
-        ]);
+    public function update(PostRequest $request, Post $post) {
+        $data = $request->validated();
         $tags = $data['tags'];
         unset($data['tags']);
 
