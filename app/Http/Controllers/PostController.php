@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterRequest;
+use App\Http\Filters\PostFilter;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -10,25 +12,26 @@ use App\Models\Tag;
 
 class PostController extends Controller
 {
-    public function index() {
-        $posts = Post::paginate(10);
-        return view('post.index', compact('posts'));
+    public function index(FilterRequest $request)
+    {
+        $data = $request->validated();
 
-        // $category = Category::find(1);
-        // $post = Post::find(1);
-        // dd($post->category);
-        // $tag = Tag::find(1);
-        // dd($tag->posts);
+        $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
+        $posts = Post::filter($filter)->paginate(10);
+
+        return view('post.index', compact('posts'));
     }
 
-    public function create() {
+    public function create()
+    {
         $categories = Category::all();
         $tags = Tag::all();
 
-       return view('post.create', compact('categories', 'tags'));
+        return view('post.create', compact('categories', 'tags'));
     }
 
-    public function store(PostRequest $request) {
+    public function store(PostRequest $request)
+    {
         $data = $request->validated();
         $tags = $data['tags'];
         unset($data['tags']);
@@ -39,45 +42,52 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-    public function show(Post $post) {
+    public function show(Post $post)
+    {
         return view('post.show', compact('post'));
     }
 
-    public function edit(Post $post) {
+    public function edit(Post $post)
+    {
         $categories = Category::all();
         $tags = Tag::all();
 
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
-    public function update(PostRequest $request, Post $post) {
+    public function update(PostRequest $request, Post $post)
+    {
         $data = $request->validated();
         $tags = $data['tags'];
         unset($data['tags']);
 
         $post->update($data);
         $post->tags()->sync($tags);
-        return redirect()->route('post.show', $post->id );
+        return redirect()->route('post.show', $post->id);
     }
 
-    public function destroy(Post $post) {
+    public function destroy(Post $post)
+    {
         $post->delete();
         return redirect()->route('post.index');
     }
 
-    public function delete() {
+    public function delete()
+    {
         $post = Post::find(1);
         $post->delete();
         dd('deleted');
     }
 
-    public function restore() {
+    public function restore()
+    {
         $post = Post::withTrashed()->find(2);
         $post->restore();
         dd('restored');
     }
 
-    public function firstOrCreate() {
+    public function firstOrCreate()
+    {
         $anotherPost = [
             'title' => 'some post',
             'content' => 'some content',
@@ -99,7 +109,8 @@ class PostController extends Controller
         dd('FOC finished');
     }
 
-    public function updateOrCreate() {
+    public function updateOrCreate()
+    {
         $anotherPost = [
             'title' => 'updateOrCreate some title oj post frome phpstore',
             'content' => 'updateOrCreate usome content',
@@ -119,5 +130,5 @@ class PostController extends Controller
         ]);
         dump($post->content);
         dd('UOC finished');
-        }
+    }
 }
