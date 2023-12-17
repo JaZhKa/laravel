@@ -42,3 +42,6 @@ Route::get('/posts/delete', [PostController::class, 'delete']);
 Route::get('/posts/restore', [PostController::class, 'restore']);
 Route::get('/posts/first_or_create', [PostController::class, 'firstOrCreate']);
 Route::get('/posts/update_or_create', [PostController::class, 'updateOrCreate']);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
