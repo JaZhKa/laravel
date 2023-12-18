@@ -69,16 +69,18 @@
                 </div>
             </nav>
             <div class="row">
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                  <div class="container-fluid">
-                      <a class="navbar-brand" href="{{ route('main.index') }}">Main</a>
-                      <a class="navbar-brand" href="{{ route('post.index') }}">Posts</a>
-                      <a class="navbar-brand" href="{{ route('gallery.index') }}">Gallery</a>
-                      <a class="navbar-brand" href="{{ route('about.index') }}">About</a>
-                      <a class="navbar-brand" href="{{ route('course.index') }}">Course</a>
-                  </div>
-              </nav>
-          </div>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="{{ route('main.index') }}">Main</a>
+                        <a class="navbar-brand" href="{{ route('post.index') }}">Posts</a>
+                        <a class="navbar-brand" href="{{ route('gallery.index') }}">Gallery</a>
+                        @can('view', auth()->user())
+                            <a class="navbar-brand" href="{{ route('about.index') }}">About</a>
+                        @endcan
+                        <a class="navbar-brand" href="{{ route('course.index') }}">Course</a>
+                    </div>
+                </nav>
+            </div>
             <main class="py-4">
                 @yield('content')
             </main>
