@@ -6,6 +6,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,11 @@ Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index
 
 Route::get('/course', [CourseController::class, 'index'])->name('course.index');
 
-Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+Route::middleware(['admin'])->group(function () {
+    Route::get('/about',  [AboutController::class, 'index'])->name('about.index');
+});
+
+// Route::get('/about', [AboutController::class, 'index', 'middleware' => 'admin'])->name('about.index');
 
 Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
