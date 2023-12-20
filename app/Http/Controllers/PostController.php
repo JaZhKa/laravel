@@ -6,6 +6,7 @@ use App\Http\Requests\FilterRequest;
 use App\Http\Filters\PostFilter;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -16,10 +17,15 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
-        $posts = Post::filter($filter)->paginate(10);
+        $page = $data['page'] ?? 1;
+        $perPage = $data['per_page'] ?? 10;
 
-        return view('post.index', compact('posts'));
+        $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
+        $posts = Post::filter($filter)->paginate($perPage, ['*'], 'page', $page);
+
+        return PostResource::collection($posts);
+
+        // return view('post.index', compact('posts'));
     }
 
     public function create()
@@ -38,6 +44,8 @@ class PostController extends Controller
         $post = Post::create($data);
 
         $post->tags()->attach($tags);
+
+        // return new PostResource($post);
 
         return redirect()->route('post.index');
     }

@@ -25,6 +25,7 @@ class PostRequest extends FormRequest
             'title'=>'string',
             'content'=>'string',
             'image'=>'string',
+            'likes'=> '',
             'category_id' => '',
             'tags' => '',
         ];
