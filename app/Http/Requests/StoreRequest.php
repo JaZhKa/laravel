@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FilterRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,12 @@ class FilterRequest extends FormRequest
     {
         return [
             //
-            'title' => 'string',
+            'title' => 'required|string',
             'content' => 'string',
-//            'image' => 'string',
-//            'likes' => 'integer',
+            'image' => 'string',
+            'likes' => 'integer',
             'category_id' => '',
-//            'tags' => '',
-            'page' => '',
-            'per_page' => '',
+            'tags' => '',
         ];
     }
 }

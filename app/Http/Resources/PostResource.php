@@ -12,14 +12,13 @@ class PostResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
             'image' => $this->image,
-            'likes' => $this->likes,
             'category_id' => $this->category_id,
             'tags' => $this->tags,
         ];

@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterRequest;
 use App\Http\Filters\PostFilter;
-use Illuminate\Http\Request;
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\StoreRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Services\PostService;
+use DeepCopy\Filter\Filter;
 
 class PostController extends Controller
 {
+    public $service;
+    public function __construct(PostService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index(FilterRequest $request)
     {
         $data = $request->validated();
@@ -36,23 +44,21 @@ class PostController extends Controller
         return view('post.create', compact('categories', 'tags'));
     }
 
-    public function store(PostRequest $request)
+    public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $tags = $data['tags'];
-        unset($data['tags']);
-        $post = Post::create($data);
 
-        $post->tags()->attach($tags);
+        $post = $this->service->store($data);
 
-        // return new PostResource($post);
+        return new PostResource($post);
 
-        return redirect()->route('post.index');
+        // return redirect()->route('post.index');
     }
 
     public function show(Post $post)
     {
         return view('post.show', compact('post'));
+        // return new PostResource($post);
     }
 
     public function edit(Post $post)
@@ -63,16 +69,15 @@ class PostController extends Controller
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
-    public function update(PostRequest $request, Post $post)
+    public function update(UpdateRequest $request, Post $post)
     {
         $data = $request->validated();
-        $tags = $data['tags'];
-        unset($data['tags']);
 
-        $post->update($data);
-        $post->tags()->sync($tags);
-        return redirect()->route('post.show', $post->id);
+        $post = $this->service->update($post, $data);
+    
+        return new PostResource($post);
     }
+    
 
     public function destroy(Post $post)
     {
