@@ -16,6 +16,8 @@ class Post extends Model
 
     protected $table = 'posts';
     protected $guarded = false;
+    protected $fillable = ['title', 'content', 'image', 'likes', 'category', 'tags'];
+
 
     public function category() {
         return $this->belongsTo(Category::class, 'category_id', 'id');
