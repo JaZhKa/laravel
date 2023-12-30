@@ -14,6 +14,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::middleware('guest')->group(function () {
+//     Route::get('register', [RegisteredUserController::class, 'create'])
+//                 ->name('register');
+
+//     Route::post('register', [RegisteredUserController::class, 'store']);
+
+//     Route::get('login', [AuthenticatedSessionController::class, 'create'])
+//                 ->name('login');
+
+//     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+//     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+//                 ->name('password.request');
+
+//     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+//                 ->name('password.email');
+
+//     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+//                 ->name('password.reset');
+
+//     Route::post('reset-password', [NewPasswordController::class, 'store'])
+//                 ->name('password.store');
+// });
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -24,6 +48,8 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
+    Route::get('register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'create']);
+    Route::post('register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
     Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
