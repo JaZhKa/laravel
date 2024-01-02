@@ -54,9 +54,13 @@ Route::group([
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create']);
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store']);
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create']);    
+    Route::post('reset-password', [NewPasswordController::class, 'store']);
 });
 
-Route::group(['namespace' => 'Post', 'middleware' => 'jwt.auth'], function() {
+Route::group(['namespace' => 'Post', 'middleware' => 'jwt.auth'], function () {
     Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);
     Route::get('/posts/create', [App\Http\Controllers\PostController::class, 'create']);
     Route::post('/posts', [App\Http\Controllers\PostController::class, 'store']);

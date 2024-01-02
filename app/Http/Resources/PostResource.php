@@ -19,6 +19,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'image' => $this->image,
+            'likes' => $this->likes,
             'category_id' => new CategoryResource($this->category),
             'tags' => TagResource::collection($this->tags),
         ];
