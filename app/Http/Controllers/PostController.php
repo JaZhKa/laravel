@@ -41,7 +41,13 @@ class PostController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
 
-        return view('post.create', compact('categories', 'tags'));
+        $data = [
+            'categories' => $categories,
+            'tags' => $tags
+        ];
+
+        return response()->json($data);
+        // return view('post.create', compact('categories', 'tags'));
     }
 
     public function store(StoreRequest $request)
