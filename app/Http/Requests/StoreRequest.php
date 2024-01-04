@@ -32,6 +32,7 @@ class StoreRequest extends FormRequest
             'category' => '',
             'tags' => '',
             'tags.*.title' => '',
+            'user' => '',
         ];
     }
 }

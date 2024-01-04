@@ -10,8 +10,8 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Models\User;
 use App\Services\PostService;
-use DeepCopy\Filter\Filter;
 
 class PostController extends Controller
 {
@@ -29,7 +29,7 @@ class PostController extends Controller
         $perPage = $data['per_page'] ?? 10;
 
         $filter = app()->make(PostFilter::class, ['queryParams' => array_filter($data)]);
-        $posts = Post::filter($filter)->orderByDesc('created_at')->paginate($perPage, ['*'], 'page', $page);
+        $posts = Post::filter($filter)->orderByDesc('id')->paginate($perPage, ['*'], 'page', $page);
 
         return PostResource::collection($posts);
 
@@ -40,10 +40,12 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
+        $user = User::all();
 
         $data = [
             'categories' => $categories,
-            'tags' => $tags
+            'tags' => $tags,
+            'users' => $user,
         ];
 
         return response()->json($data);
@@ -77,7 +79,7 @@ class PostController extends Controller
         $post = $this->service->update($post, $data);
         return $post instanceof Post ? new PostResource($post) : $post;
     }
-    
+
 
     public function destroy(Post $post)
     {

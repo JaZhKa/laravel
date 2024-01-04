@@ -22,6 +22,7 @@ class PostResource extends JsonResource
             'likes' => $this->likes,
             'category_id' => new CategoryResource($this->category),
             'tags' => TagResource::collection($this->tags),
+            'user_id' => new UserResource($this->user),
         ];
     }
 }

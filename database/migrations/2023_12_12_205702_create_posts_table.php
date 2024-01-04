@@ -23,10 +23,12 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unsignedBigInteger('category_id')->nullable();
-
             $table->index('category_id', 'post_category_idx');
-
             $table->foreign('category_id', 'post_category_fk')->on('categories')->references('id');
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->index('user_id', 'post_user_idx');
+            $table->foreign('user_id', 'post_user_fk')->on('users')->references('id');
         });
     }
 

@@ -24,15 +24,15 @@ class FilterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'title' => 'string',
             'content' => 'string',
 //            'image' => 'string',
 //            'likes' => 'integer',
             'category_id' => '',
-//            'tags' => '',
+            //            'tags' => '',
             'page' => '',
             'per_page' => '',
+            'user_id' => '',
         ];
     }
 }

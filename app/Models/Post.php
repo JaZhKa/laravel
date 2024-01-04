@@ -16,7 +16,7 @@ class Post extends Model
 
     protected $table = 'posts';
     protected $guarded = false;
-    protected $fillable = ['title', 'content', 'image', 'likes', 'category', 'tags'];
+    protected $fillable = ['title', 'content', 'image', 'likes', 'category', 'tags', 'user'];
 
 
     public function category() {
@@ -25,5 +25,9 @@ class Post extends Model
 
     public function tags() {
         return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
