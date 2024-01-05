@@ -40,12 +40,10 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $user = User::all();
 
         $data = [
             'categories' => $categories,
             'tags' => $tags,
-            'users' => $user,
         ];
 
         return response()->json($data);

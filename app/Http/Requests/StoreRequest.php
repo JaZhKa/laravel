@@ -24,7 +24,6 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'title' => 'required|string',
             'content' => 'string',
             'image' => 'string',
@@ -32,7 +31,7 @@ class StoreRequest extends FormRequest
             'category' => '',
             'tags' => '',
             'tags.*.title' => '',
-            'user' => '',
+            'user_id' => 'integer',
         ];
     }
 }
